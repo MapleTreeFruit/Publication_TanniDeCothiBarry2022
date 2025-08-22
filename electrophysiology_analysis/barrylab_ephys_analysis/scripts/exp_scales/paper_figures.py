@@ -4411,7 +4411,8 @@ def main(fpath):
 
     ExampleUnit.write(fpath, all_recordings, df_units, prefix='Figure_1_')
     FieldDetectionMethod.write(fpath, all_recordings, df_units, prefix='Figure_1_sup_2_')
-    IntraTrialCorrelations.write(fpath, all_recordings, df_units, df_fields, prefix='Figure_1_sup_3_')
+    # Some error happened in Figure_1_sup_3
+    # IntraTrialCorrelations.write(fpath, all_recordings, df_units, df_fields, prefix='Figure_1_sup_3_') 
     PlaceCellAndFieldCounts.write(fpath, df_units, df_fields, prefix='Figure_2AB_')
     FieldsPerCellAcrossEnvironmentsSimple.write(fpath, df_units, df_fields, prefix='Figure_2C_')
     Remapping.write(fpath, all_recordings, prefix='Figure_2_sup_1_')
