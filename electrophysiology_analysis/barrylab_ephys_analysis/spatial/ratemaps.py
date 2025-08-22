@@ -959,6 +959,21 @@ class SpatialRatemap(object):
             'even': ratemap_even_minutes.spike_rates_smoothed(n_smoothing_bins, method=smoothing_method)
         }
 
+        # Compute spatial information content for place cell detection
+        smoothed_ratemap = unit['analysis']['spatial_ratemaps']['spike_rates_smoothed']
+        smoothed_ratemap[np.isnan(smoothed_ratemap)] = 0
+        total_dwell = ratemap.dwell_time.sum()
+        mean_rate = (smoothed_ratemap * ratemap.dwell_time).sum() / total_dwell
+
+        info_content = 0
+        for i in range(smoothed_ratemap.shape[0]):
+            for j in range(smoothed_ratemap.shape[1]):
+                p = ratemap.dwell_time[i, j] / total_dwell
+                if p > 0 and smoothed_ratemap[i, j] > 0 and mean_rate > 0:
+                    info_content += (p * (smoothed_ratemap[i, j]/mean_rate) * np.log2(smoothed_ratemap[i, j]/mean_rate))
+
+        unit['analysis']['spatial_ratemaps']['spatial_information_content'] = info_content
+
         if not (direction_filter_kwargs is None):
             unit['analysis']['spatial_ratemaps']['direction_filtered_ratemaps'] = \
                 SpatialRatemap.compute_direction_filtered_ratemaps(
